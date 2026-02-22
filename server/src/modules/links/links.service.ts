@@ -1,5 +1,6 @@
 import { Link, NewLink } from "@/db/schema.js";
 import { ILinks } from "./links.interface.js";
+import { BadRequestError, ConflictError, NotFoundError } from "@/errors/error.js";
 
 export class LinksService {
     constructor(private repository: ILinks) { }
@@ -7,7 +8,7 @@ export class LinksService {
     async createLink(data: NewLink): Promise<Link> {
         const alreadyExistsLink = await this.repository.findByShortUrl(data.shortUrl)
 
-        if (alreadyExistsLink) throw new Error("Esta URL ja esta cadastrada!")
+        if (alreadyExistsLink) throw new ConflictError("Esta URL ja esta cadastrada!")
 
         return await this.repository.createLink(data)
     }
@@ -15,7 +16,7 @@ export class LinksService {
     async findByShortUrl(shortUrl: string): Promise<Link | null> {
         const link = await this.repository.findByShortUrl(shortUrl)
 
-        if (!link) throw new Error("Essa URL não existe!")
+        if (!link) throw new NotFoundError("Essa URL não existe!")
 
         return link
     }
@@ -23,7 +24,7 @@ export class LinksService {
     async findById(id: string): Promise<Link | null> {
         const link = await this.repository.findById(id)
 
-        if (!link) throw new Error("Não existe nenhuma URL com este ID!")
+        if (!link) throw new NotFoundError("Não existe nenhuma URL com este ID!")
 
         return link
     }
@@ -35,7 +36,7 @@ export class LinksService {
     async deleteById(id: string): Promise<void> {
         const link = await this.repository.findById(id)
 
-        if (!link) throw new Error("Não foi possivel deletar sua URL!")
+        if (!link) throw new NotFoundError("Não foi possivel deletar sua URL!")
 
         return await this.repository.deleteById(id)
     }
@@ -43,7 +44,7 @@ export class LinksService {
     async incrementAccessCount(id: string): Promise<void> {
         const link = await this.repository.findById(id)
 
-        if (!link) throw new Error("Não foi possivel incrementar")
+        if (!link) throw new NotFoundError("Não foi possivel incrementar")
 
         return await this.repository.incrementAccessCount(id)
     }
