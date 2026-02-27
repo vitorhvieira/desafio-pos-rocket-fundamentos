@@ -1,0 +1,17 @@
+# Ignore the .git directory and related files
+.git
+.gitignore
+
+# Ignore build artifacts and log files
+**/node_modules
+**/dist
+*.log
+npm-debug.log*
+
+# Exclude sensitive environment files
+.env
+.aws
+
+# Exclude all markdown files except README.md
+*.md
+!README.md

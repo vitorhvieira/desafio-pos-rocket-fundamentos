@@ -1,7 +1,7 @@
 import { NewLink, Link, linksTable } from "@/db/schema.js";
 import { ILinks } from "./links.interface.js";
 import { NodePgDatabase } from "drizzle-orm/node-postgres";
-import { eq, sql } from "drizzle-orm";
+import { asc, eq, sql } from "drizzle-orm";
 
 
 export class LinkRepository implements ILinks {
@@ -20,7 +20,7 @@ export class LinkRepository implements ILinks {
         return link ?? null
     }
     async findAll(): Promise<Link[]> {
-        return await this.db.select().from(linksTable)
+        return await this.db.select().from(linksTable).orderBy(asc(linksTable.createdAt))
     }
     async deleteById(id: string): Promise<void> {
         await this.db.delete(linksTable).where(eq(linksTable.id, id))

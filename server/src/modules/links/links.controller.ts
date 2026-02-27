@@ -4,7 +4,7 @@ import z from "zod";
 
 const createLinkBody = z.object({
     originalUrl: z.string().url(),
-    shortUrl: z.string().min(4).max(20),
+    shortUrl: z.string().min(4).max(20).regex(/^[a-zA-Z0-9_-]+$/, 'URL encurtada com formato inválido'),
 })
 
 const findByShortUrlParams = z.object({
@@ -35,7 +35,7 @@ export class LinksController {
 
         await this.linksService.incrementAccessCount(link!.id)
 
-        return reply.redirect(link!.originalUrl)
+        return reply.status(200).send({ originalUrl: link!.originalUrl })
     }
 
     async findAll(request: FastifyRequest, reply: FastifyReply): Promise<FastifyReply> {

@@ -9,9 +9,12 @@
   "scripts": {
     "dev": "tsx watch --env-file .env src/index.ts",
     "db:migrate": "drizzle-kit migrate",
-    "db:generate": "drizzle-kit generate"
+    "db:generate": "drizzle-kit generate",
+    "build": "tsup",
+    "start": "node dist/index.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.997.0",
     "@fastify/cors": "^11.2.0",
     "dotenv": "^17.3.1",
     "drizzle-orm": "^0.45.1",
@@ -26,6 +29,7 @@
     "@types/node": "^25.3.0",
     "@types/pg": "^8.16.0",
     "drizzle-kit": "^0.31.9",
+    "tsup": "^8.5.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
